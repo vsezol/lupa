@@ -2,7 +2,7 @@ import html2canvas from "html2canvas";
 import { setupCounter } from "./counter.ts";
 import "./style.css";
 import typescriptLogo from "./typescript.svg";
-import viteLogo from "/vite.svg";
+import viteLogo from "./vite.svg";
 
 document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
   <div>
