@@ -6,6 +6,7 @@ export class Magnifier {
   readonly #wrapperElement: HTMLElement;
   readonly #rootElement: HTMLElement;
   readonly #size;
+  #canvas: HTMLCanvasElement | undefined;
 
   constructor(
     size: number = DEFAULT_SIZE_PX,
@@ -17,8 +18,16 @@ export class Magnifier {
     this.#rootElement.appendChild(this.#wrapperElement);
   }
 
-  async magnify(x: number, y: number): Promise<void> {
-    const canvas = await this.#toCanvas(x, y);
+  async render(): Promise<void> {
+    this.#canvas = await html2canvas(this.#rootElement, {
+      logging: false,
+      imageTimeout: 0,
+      ignoreElements: (element) => element.id === this.#wrapperElement.id,
+    });
+  }
+
+  magnify(x: number, y: number): void {
+    const canvas = this.#cropCanvas(x, y);
 
     if (!canvas) {
       throw new Error('Magnifier: failed to magnify');
@@ -32,20 +41,15 @@ export class Magnifier {
     this.#wrapperElement.style.top = `${y - this.#size / 2}px`;
   }
 
-  async #toCanvas(
-    x: number,
-    y: number
-  ): Promise<HTMLCanvasElement | undefined> {
-    const canvas = await html2canvas(this.#rootElement, {
-      logging: false,
-      imageTimeout: 0,
-      ignoreElements: (element) => element.id === this.#wrapperElement.id,
-    });
+  #cropCanvas(x: number, y: number): HTMLCanvasElement | undefined {
+    if (!this.#canvas) {
+      return undefined;
+    }
 
-    const newCanvas = cropCanvas(canvas, x, y, this.#size);
+    const newCanvas = cropCanvas(this.#canvas, x, y, this.#size);
 
     if (!newCanvas) {
-      return;
+      return undefined;
     }
 
     return newCanvas;

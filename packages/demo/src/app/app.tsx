@@ -1,4 +1,4 @@
-import { useLupa } from 'core';
+import { useLupa } from '@lupa/react';
 import {
   Box,
   Button,

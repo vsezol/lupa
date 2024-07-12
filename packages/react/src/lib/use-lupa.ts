@@ -15,10 +15,19 @@ export const useLupa = ({ size }: LupaOptions) => {
       magnifier.magnify(event.x, event.y);
     };
 
+    // const render = () => {
+    //   magnifier.render();
+
+    //   requestIdleCallback(render);
+    // };
+
+    // render();
+    magnifier.render();
+
     const mouseMoveListener = debounce(magnify, 0);
 
-    document.addEventListener('mousemove', mouseMoveListener);
+    window.addEventListener('mousemove', mouseMoveListener);
 
-    return document.removeEventListener('mousemove', mouseMoveListener);
-  }, [size]);
+    return () => window.removeEventListener('mousemove', mouseMoveListener);
+  }, []);
 };
