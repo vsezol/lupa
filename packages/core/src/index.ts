@@ -1,1 +1,1 @@
-export * from './lib/core';
+export { useLupa } from './lib/use-lupa';

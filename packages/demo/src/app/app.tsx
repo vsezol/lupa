@@ -1,3 +1,4 @@
+import { useLupa } from 'core';
 import {
   Box,
   Button,
@@ -107,6 +108,8 @@ const CardTemplate = ({ title, children }: CardProps) => {
 
 export function App() {
   const [dark, setDark] = useState(false);
+
+  useLupa({ size: 300 });
 
   return (
     <Grommet theme={theme} themeMode={dark ? 'dark' : 'light'} full>
