@@ -20,6 +20,7 @@ import { Moon, SearchAdvanced, Sun } from 'grommet-icons';
 import { deepMerge } from 'grommet/utils';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { Lupa } from './lupa';
 
 const theme = deepMerge(grommet, {
   global: {
@@ -126,8 +127,13 @@ const CardTemplate = ({ title, children }: CardProps) => {
 
 export function App() {
   const [dark, setDark] = useState(false);
+  const [lupaPosition, setLupaPosition] = useState<{ x: number; y: number }>();
 
-  const { render } = useLupa({ size: 300 });
+  const { render, setShow } = useLupa({
+    size: 300,
+    ignoreElements: ['lupa-img'],
+    onChangePosition: ({ x, y }) => setLupaPosition({ x, y }),
+  });
 
   useEffect(() => {
     setTimeout(() => {
@@ -211,6 +217,7 @@ export function App() {
                   secondary
                   icon={<SearchAdvanced size="medium" />}
                   label="пупа-лупа!"
+                  onClick={() => setShow(true)}
                 />
               </Box>
             </CardTemplate>
@@ -221,6 +228,8 @@ export function App() {
           </Box>
         </PageContent>
       </Page>
+
+      {lupaPosition && <Lupa id="lupa-img" {...lupaPosition} />}
     </Grommet>
   );
 }

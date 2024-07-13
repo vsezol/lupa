@@ -5,24 +5,33 @@ const DEFAULT_SIZE_PX = 100;
 export class Magnifier {
   readonly #wrapperElement: HTMLElement;
   readonly #rootElement: HTMLElement;
-  readonly #size;
+  readonly #size: number;
+  readonly #ignoreElements: string[];
   #canvas: HTMLCanvasElement | undefined;
 
   constructor(
     size: number = DEFAULT_SIZE_PX,
+    ignoreElements: string[] = [],
     wrapperElement: HTMLElement = createMagnifierWrapper(size)
   ) {
     this.#size = size;
+    this.#ignoreElements = ignoreElements;
     this.#rootElement = document.body;
     this.#wrapperElement = wrapperElement;
     this.#rootElement.appendChild(this.#wrapperElement);
+  }
+
+  destroy(): void {
+    this.#wrapperElement.remove();
+    this.#canvas = undefined;
   }
 
   async render(): Promise<void> {
     this.#canvas = await html2canvas(this.#rootElement, {
       logging: false,
       imageTimeout: 0,
-      ignoreElements: (element) => element.id === this.#wrapperElement.id,
+      ignoreElements: (element) =>
+        [...this.#ignoreElements, this.#wrapperElement.id].includes(element.id),
     });
   }
 
