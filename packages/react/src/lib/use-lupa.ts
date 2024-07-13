@@ -42,7 +42,7 @@ export const useLupa = ({
   }, [magnifier, renderOnIdle]);
 
   const magnify = useCallback(
-    debounce((event: MouseEvent) => {
+    debounce((event: PointerEvent) => {
       lastEvent.current = event;
 
       magnifier.current?.setPosition(event.x, event.y);
@@ -59,7 +59,7 @@ export const useLupa = ({
 
   useEffect(() => {
     const destroy = () => {
-      window.removeEventListener('mousemove', magnify);
+      window.removeEventListener('pointermove', magnify);
       magnifier.current?.destroy();
     };
 
@@ -72,7 +72,7 @@ export const useLupa = ({
 
     render();
 
-    window.addEventListener('mousemove', magnify);
+    window.addEventListener('pointermove', magnify);
 
     return () => destroy();
   }, [show]);
