@@ -18,9 +18,8 @@ import {
 } from 'grommet';
 import { Moon, SearchAdvanced, Sun } from 'grommet-icons';
 import { deepMerge } from 'grommet/utils';
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { Bug } from './bug';
 
 const theme = deepMerge(grommet, {
   global: {
@@ -85,12 +84,31 @@ const rotateLeft = keyframes`
   }
 `;
 
+const slide = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
+`;
+
 const Virus = styled.img<{ left?: boolean }>`
   width: 16px;
   height: 16px;
   position: absolute;
   animation: ${({ left = false }) => (left ? rotateLeft : rotateRight)} 2s
     linear infinite;
+`;
+
+const Bug = styled.img`
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  right: 4px;
 `;
 
 const CardTemplate = ({ title, children }: CardProps) => {
@@ -109,7 +127,13 @@ const CardTemplate = ({ title, children }: CardProps) => {
 export function App() {
   const [dark, setDark] = useState(false);
 
-  useLupa({ size: 300 });
+  const { render } = useLupa({ size: 300 });
+
+  useEffect(() => {
+    setTimeout(() => {
+      render();
+    }, 500);
+  }, []);
 
   return (
     <Grommet theme={theme} themeMode={dark ? 'dark' : 'light'} full>
@@ -151,14 +175,7 @@ export function App() {
                   justify="center"
                   style={{ position: 'relative' }}
                 >
-                  <Bug
-                    style={{
-                      position: 'absolute',
-                      top: '50%',
-                      right: 4,
-                      transform: 'translate(-50%, -50%)',
-                    }}
-                  />
+                  <Bug src="/bug.png" />
                   <Button primary size="large" label="Не жмякается"></Button>
                 </Box>
               </Box>
