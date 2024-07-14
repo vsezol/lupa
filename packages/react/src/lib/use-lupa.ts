@@ -9,6 +9,7 @@ interface ChangePositionEvent {
 
 interface LupaOptions {
   size: number;
+  scale?: number;
   renderOnIdle?: boolean;
   renderOnMove?: boolean;
   ignoreElements?: string[];
@@ -17,6 +18,7 @@ interface LupaOptions {
 
 export const useLupa = ({
   size,
+  scale = 2,
   renderOnIdle = false,
   renderOnMove = false,
   ignoreElements = [],
@@ -68,14 +70,14 @@ export const useLupa = ({
       return;
     }
 
-    magnifier.current = new Magnifier(size, ignoreElements);
+    magnifier.current = new Magnifier(size, ignoreElements, scale);
 
     render();
 
     window.addEventListener('pointermove', magnify);
 
     return () => destroy();
-  }, [show]);
+  }, [show, scale]);
 
   return {
     render,

@@ -12,6 +12,7 @@ import {
   Page,
   PageContent,
   PageHeader,
+  RangeInput,
   Text,
   WorldMap,
   grommet,
@@ -19,7 +20,7 @@ import {
 import { Moon, SearchAdvanced, Sun } from 'grommet-icons';
 import { deepMerge } from 'grommet/utils';
 import { PropsWithChildren, useEffect, useState } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { Lupa } from './lupa';
 
 const theme = deepMerge(grommet, {
@@ -60,47 +61,14 @@ const WorldMapTemplate = () => {
           color: 'status-critical',
         },
       ]}
-      selectColor="brand"
     />
   );
 };
 
-const rotateRight = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-const rotateLeft = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(-360deg);
-  }
-`;
-
-const slide = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(-360deg);
-  }
-`;
-
-const Virus = styled.img<{ left?: boolean }>`
-  width: 16px;
-  height: 16px;
+const Virus = styled.img`
+  width: 8px;
+  height: 8px;
   position: absolute;
-  animation: ${({ left = false }) => (left ? rotateLeft : rotateRight)} 2s
-    linear infinite;
 `;
 
 const Bug = styled.img`
@@ -109,7 +77,7 @@ const Bug = styled.img`
   position: absolute;
   top: 50%;
   transform: translate(-50%, -50%) rotate(-90deg);
-  right: 4px;
+  right: 2px;
 `;
 
 const CardTemplate = ({ title, children }: CardProps) => {
@@ -128,9 +96,11 @@ const CardTemplate = ({ title, children }: CardProps) => {
 export function App() {
   const [dark, setDark] = useState(false);
   const [lupaPosition, setLupaPosition] = useState<{ x: number; y: number }>();
+  const [scale, setScale] = useState(2);
 
   const { render, setShow } = useLupa({
     size: 300,
+    scale,
     ignoreElements: ['lupa-img'],
     onChangePosition: ({ x, y }) => setLupaPosition({ x, y }),
   });
@@ -198,12 +168,12 @@ export function App() {
                     left
                     src="/virus-1.png"
                     alt="virus 1"
-                    style={{ left: 0, top: 20 }}
+                    style={{ left: 0, top: 10 }}
                   />
                   <Virus
                     src="/virus-3.png"
                     alt="virus 2"
-                    style={{ left: 20, top: 10 }}
+                    style={{ left: 10, top: 5 }}
                   />
                   <Virus left src="/virus-2.png" alt="virus 3" />
                 </div>
@@ -211,13 +181,25 @@ export function App() {
             </CardTemplate>
 
             <CardTemplate title="Забудьте про ctrl + — есть лупа">
-              <Box direction="row" justify="center" pad={{ top: 'medium' }}>
+              <Box
+                direction="row"
+                justify="center"
+                align="center"
+                gap={'medium'}
+                pad={{ top: 'medium' }}
+              >
                 <Button
                   size="large"
                   secondary
                   icon={<SearchAdvanced size="medium" />}
-                  label="пупа-лупа!"
+                  label="Лупа!"
                   onClick={() => setShow(true)}
+                />
+                <RangeInput
+                  value={scale}
+                  onChange={(event) => setScale(Number(event.target.value))}
+                  min={2}
+                  max={10}
                 />
               </Box>
             </CardTemplate>

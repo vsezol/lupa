@@ -6,15 +6,18 @@ export class Magnifier {
   readonly #wrapperElement: HTMLElement;
   readonly #rootElement: HTMLElement;
   readonly #size: number;
+  readonly #scale: number;
   readonly #ignoreElements: string[];
   #canvas: HTMLCanvasElement | undefined;
 
   constructor(
     size: number = DEFAULT_SIZE_PX,
     ignoreElements: string[] = [],
+    scale = 2,
     wrapperElement: HTMLElement = createMagnifierWrapper(size)
   ) {
     this.#size = size;
+    this.#scale = scale;
     this.#ignoreElements = ignoreElements;
     this.#rootElement = document.body;
     this.#wrapperElement = wrapperElement;
@@ -30,6 +33,7 @@ export class Magnifier {
     this.#canvas = await html2canvas(this.#rootElement, {
       logging: false,
       imageTimeout: 0,
+      scale: this.#scale,
       ignoreElements: (element) =>
         [...this.#ignoreElements, this.#wrapperElement.id].includes(element.id),
     });
@@ -55,7 +59,13 @@ export class Magnifier {
       return undefined;
     }
 
-    const newCanvas = cropCanvas(this.#canvas, x, y, this.#size);
+    const scaleMultiplier = this.#scale / 2;
+    const newCanvas = cropCanvas(
+      this.#canvas,
+      x * scaleMultiplier,
+      y * scaleMultiplier,
+      this.#size
+    );
 
     if (!newCanvas) {
       return undefined;
