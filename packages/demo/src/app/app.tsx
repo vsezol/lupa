@@ -13,11 +13,10 @@ import {
   PageContent,
   PageHeader,
   RangeInput,
-  Text,
   WorldMap,
   grommet,
 } from 'grommet';
-import { Moon, SearchAdvanced, Sun } from 'grommet-icons';
+import { SearchAdvanced } from 'grommet-icons';
 import { deepMerge } from 'grommet/utils';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -98,7 +97,7 @@ const CardTemplate = ({ title, children }: CardProps) => {
 };
 
 export function App() {
-  const [dark, setDark] = useState(false);
+  const [dark, setDark] = useState(true);
   const [lupaPosition, setLupaPosition] = useState<{ x: number; y: number }>();
   const [scale, setScale] = useState(2);
 
@@ -110,6 +109,7 @@ export function App() {
   });
 
   useEffect(() => {
+    setShow(true);
     setTimeout(() => {
       render();
     }, 500);
@@ -117,8 +117,8 @@ export function App() {
 
   return (
     <Grommet theme={theme} themeMode={dark ? 'dark' : 'light'} full>
-      <Page>
-        <AppBar>
+      <Page style={{ backgroundImage: 'url(/stars-bg.jpg)' }}>
+        {/* <AppBar>
           <Text size="large">ПУПА ЛУПА</Text>
 
           <Button
@@ -138,9 +138,42 @@ export function App() {
               plain: true,
             }}
           />
-        </AppBar>
+        </AppBar> */}
 
         <PageContent>
+          {lupaPosition && <Lupa id="lupa-img" {...lupaPosition} />}
+
+          <Box pad="large"></Box>
+          <Box pad="large"></Box>
+          <Box pad="large"></Box>
+          <Box pad="large"></Box>
+          <Box pad="small"></Box>
+
+          <Box
+            alignSelf="center"
+            justify="center"
+            align="center"
+            title="Приветствуем всех Пуп и Луп!"
+            pad="large"
+            style={{ position: 'relative' }}
+          >
+            <Box
+              justify="center"
+              style={{ position: 'absolute', bottom: '29%', left: '37%' }}
+            >
+              <Heading level={4} margin="none" color={'black'}>
+                ПУПА
+              </Heading>
+            </Box>
+
+            <Pupa src="/pupa.webp" alt="pupa" />
+          </Box>
+
+          <Box pad="large"></Box>
+          <Box pad="large"></Box>
+          <Box pad="large"></Box>
+          <Box pad="large"></Box>
+
           <PageHeader
             alignSelf="center"
             size="small"
@@ -212,26 +245,8 @@ export function App() {
           <Box direction="row" justify="center">
             <WorldMapTemplate></WorldMapTemplate>
           </Box>
-
-          <Box
-            alignSelf="center"
-            justify="center"
-            align="center"
-            title="Приветствуем всех Пуп и Луп!"
-            pad="large"
-          >
-            <Box justify="center">
-              <Heading level={3} margin="none">
-                Это ПУПА
-              </Heading>
-            </Box>
-
-            <Pupa src="/pupa.webp" alt="pupa" />
-          </Box>
         </PageContent>
       </Page>
-
-      {lupaPosition && <Lupa id="lupa-img" {...lupaPosition} />}
     </Grommet>
   );
 }
