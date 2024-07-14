@@ -80,6 +80,10 @@ const Bug = styled.img`
   right: 2px;
 `;
 
+const Pupa = styled.img`
+  width: 128px;
+`;
+
 const CardTemplate = ({ title, children }: CardProps) => {
   return (
     <Card elevation="none" border pad="medium">
@@ -207,6 +211,22 @@ export function App() {
 
           <Box direction="row" justify="center">
             <WorldMapTemplate></WorldMapTemplate>
+          </Box>
+
+          <Box
+            alignSelf="center"
+            justify="center"
+            align="center"
+            title="Приветствуем всех Пуп и Луп!"
+            pad="large"
+          >
+            <Box justify="center">
+              <Heading level={3} margin="none">
+                Это ПУПА
+              </Heading>
+            </Box>
+
+            <Pupa src="/pupa.webp" alt="pupa" />
           </Box>
         </PageContent>
       </Page>
