@@ -212,22 +212,6 @@ export function App() {
           <Box direction="row" justify="center">
             <WorldMapTemplate></WorldMapTemplate>
           </Box>
-
-          <Box
-            alignSelf="center"
-            justify="center"
-            align="center"
-            title="Приветствуем всех Пуп и Луп!"
-            pad="large"
-          >
-            <Box justify="center">
-              <Heading level={3} margin="none">
-                Это ПУПА
-              </Heading>
-            </Box>
-
-            <Pupa src="/pupa.webp" alt="pupa" />
-          </Box>
         </PageContent>
       </Page>
 

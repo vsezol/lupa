@@ -15,6 +15,7 @@ const StyledLupa = styled.img<LupaProps>`
   top: ${({ y }) => y - size / 2 + 95}px;
   left: ${({ x }) => x - size / 2 + 95}px;
   z-index: 10000;
+  cursor: none;
 `;
 
 export const Lupa = ({ x, y, id }: LupaProps) => {
